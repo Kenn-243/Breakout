@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dp30wu00cnh43"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l5hyu"]
+size = Vector2(7, 720)
+
+[node name="SideWall" type="StaticBody2D" unique_id=367854346]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=899441061]
+position = Vector2(3.5, 360)
+shape = SubResource("RectangleShape2D_l5hyu")
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=1206399518]
+polygon = PackedVector2Array(0, 0, 7, 0, 7, 720, 0, 720)

@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://jlt77d8un4m6"]
+
+[ext_resource type="Script" uid="uid://bjp6awiqnm13i" path="res://main.gd" id="1_7mycd"]
+[ext_resource type="PackedScene" uid="uid://dww6t1dvxlxkb" path="res://player/paddle.tscn" id="2_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://c0nbyfmmjwodq" path="res://wall/topwall.tscn" id="2_lquwl"]
+[ext_resource type="PackedScene" uid="uid://dp30wu00cnh43" path="res://wall/sidewall.tscn" id="3_lquwl"]
+[ext_resource type="PackedScene" uid="uid://c3arr2135u626" path="res://ball/ball.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://dnkefro3m3acj" path="res://brick/brick.tscn" id="4_7mycd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l5hyu"]
+size = Vector2(1286, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pperb"]
+size = Vector2(1280, 20)
+
+[sub_resource type="Curve2D" id="Curve2D_lquwl"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -0.47058812, 9, 0, 0, 0, 0, 1304.6276, 9)
+}
+point_count = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_lquwl"]
+font_size = 100
+font_color = Color(0.5862409, 0.4606796, 0.9999903, 1)
+
+[node name="Main" type="Node" unique_id=212133482]
+script = ExtResource("1_7mycd")
+brick_scene = ExtResource("4_7mycd")
+
+[node name="Background" type="CanvasLayer" parent="." unique_id=881135865]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="Background" unique_id=965292520]
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+color = Color(0.16206557, 0.1620656, 0.16206557, 1)
+
+[node name="Walls" type="Node2D" parent="." unique_id=1367553842]
+
+[node name="RightWall" parent="Walls" unique_id=367854346 instance=ExtResource("3_lquwl")]
+position = Vector2(1279, 0)
+
+[node name="LeftWall" parent="Walls" unique_id=301282293 instance=ExtResource("3_lquwl")]
+position = Vector2(-6, 0)
+
+[node name="TopWall" parent="Walls" unique_id=1830200920 instance=ExtResource("2_lquwl")]
+position = Vector2(1, -6)
+
+[node name="Paddle" parent="." unique_id=380104225 groups=["paddle"] instance=ExtResource("2_1bvp3")]
+visible = false
+
+[node name="Ball" parent="." unique_id=355255428 instance=ExtResource("4_1bvp3")]
+visible = false
+
+[node name="BallGameOver" type="Area2D" parent="." unique_id=165718798]
+collision_layer = 32
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BallGameOver" unique_id=2083431321]
+position = Vector2(643, 730)
+shape = SubResource("RectangleShape2D_l5hyu")
+
+[node name="BrickGameOver" type="Area2D" parent="." unique_id=2034433401]
+collision_layer = 16
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BrickGameOver" unique_id=454073918]
+position = Vector2(640, 602)
+shape = SubResource("RectangleShape2D_pperb")
+
+[node name="SpawnTimer" type="Timer" parent="." unique_id=1681019588]
+process_callback = 0
+wait_time = 5.0
+
+[node name="BallPosition" type="Marker2D" parent="." unique_id=1059291895]
+position = Vector2(640, 500)
+
+[node name="PaddlePosition" type="Marker2D" parent="." unique_id=67268317]
+position = Vector2(640, 690)
+
+[node name="BrickSpawn" type="Path2D" parent="." unique_id=30691914]
+position = Vector2(0.4615383, 8)
+scale = Vector2(0.9807692, 1)
+curve = SubResource("Curve2D_lquwl")
+
+[node name="BrickSpawnLocation" type="PathFollow2D" parent="BrickSpawn" unique_id=1022304469]
+position = Vector2(-0.47058812, 9)
+
+[node name="GameOver" type="CanvasLayer" parent="." unique_id=1775098918]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="GameOver" unique_id=1522698815]
+offset_right = 1280.0
+offset_bottom = 720.0
+mouse_filter = 2
+color = Color(0.7647059, 0.7647059, 0.7647059, 0.36862746)
+
+[node name="Label" type="Label" parent="GameOver" unique_id=794691086]
+offset_left = 366.0
+offset_top = 274.0
+offset_right = 909.0
+offset_bottom = 411.0
+text = "Game Over"
+label_settings = SubResource("LabelSettings_lquwl")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="body_entered" from="BallGameOver" to="." method="_on_ball_game_over_body_entered"]
+[connection signal="body_entered" from="BrickGameOver" to="." method="_on_brick_game_over_body_entered"]
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
