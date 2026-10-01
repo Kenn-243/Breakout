@@ -8,7 +8,7 @@ Move the paddle left and right to bounce the ball into the bricks. Each brick yo
 
 | Key | Action |
 | --- | --- |
-| ← / → (or A / D) | Move paddle |
+| A / D | Move paddle |
 
 ## Features
 
